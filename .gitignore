@@ -1,0 +1,6 @@
+git init
+git add .
+git commit -m "EV battery health predictor"
+git branch -M main
+git remote add origin https://github.com/vrshy/<EV-Battery-Health>.git
+git push -u origin main
