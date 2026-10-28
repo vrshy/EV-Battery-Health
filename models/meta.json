@@ -1,0 +1,95 @@
+{
+  "features": [
+    "avg_voltage",
+    "min_voltage",
+    "avg_current",
+    "avg_temp",
+    "max_temp",
+    "discharge_time_s"
+  ],
+  "eol_soh": 80,
+  "rated_capacity": 2.0,
+  "example_battery": "B0018",
+  "ranges": {
+    "avg_voltage": {
+      "min": 3.403885091976961,
+      "max": 3.5735512387791406,
+      "median": 3.5025200757459167
+    },
+    "min_voltage": {
+      "min": 1.7370300333706354,
+      "max": 2.699983457940659,
+      "median": 2.4210344794657197
+    },
+    "avg_current": {
+      "min": -1.9997552547832569,
+      "max": -1.5169723774339865,
+      "median": -1.851049512033249
+    },
+    "avg_temp": {
+      "min": 30.10270376338569,
+      "max": 34.490493589415046,
+      "median": 32.368347273375136
+    },
+    "max_temp": {
+      "min": 36.372087786130464,
+      "max": 42.33252236723314,
+      "median": 39.671952276061674
+    },
+    "discharge_time_s": {
+      "min": 2742.843,
+      "max": 3690.234,
+      "median": 3084.281
+    }
+  },
+  "examples": {
+    "Early life": {
+      "cycle": 1,
+      "start_capacity": 1.8550045207910817,
+      "actual_capacity": 1.8550045207910817,
+      "actual_soh": 100.0,
+      "values": {
+        "avg_voltage": 3.5275462263272543,
+        "min_voltage": 2.472160843460044,
+        "avg_current": -1.9541761960216968,
+        "avg_temp": 31.773285281389256,
+        "max_temp": 38.10180309676608,
+        "discharge_time_s": 3434.891
+      }
+    },
+    "Mid life": {
+      "cycle": 67,
+      "start_capacity": 1.8550045207910817,
+      "actual_capacity": 1.5222595950771978,
+      "actual_soh": 82.06231187124104,
+      "values": {
+        "avg_voltage": 3.496255482779393,
+        "min_voltage": 2.497752653580319,
+        "avg_current": -1.8129628028687812,
+        "avg_temp": 30.72618807915112,
+        "max_temp": 37.37911114363861,
+        "discharge_time_s": 3034.672
+      }
+    },
+    "Late life": {
+      "cycle": 132,
+      "start_capacity": 1.8550045207910817,
+      "actual_capacity": 1.341051440640485,
+      "actual_soh": 72.29370201580872,
+      "values": {
+        "avg_voltage": 3.447928507599004,
+        "min_voltage": 2.365584676338373,
+        "avg_current": -1.77774044867741,
+        "avg_temp": 31.27624493654335,
+        "max_temp": 38.371813640118894,
+        "discharge_time_s": 2742.843
+      }
+    }
+  },
+  "trained_on": [
+    "B0005",
+    "B0006",
+    "B0007",
+    "B0018"
+  ]
+}
