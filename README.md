@@ -2,7 +2,7 @@
 
 Predicts a lithium-ion battery's **capacity**, **State of Health (SOH)** and **Remaining Useful Life (RUL)** from the measurements of a single discharge cycle, and serves the predictions in a small Streamlit web app.
 
-🔗 **Live app:** [BatteryHealth](http://localhost:8502/)
+🔗 **Live app:** [BatteryHealth](https://ev-battery-health-rxtyr4kezt79ceafe8jdw6.streamlit.app/)
 
 ![App screenshot](images/app1.png)
 ![App screenshot](images/app2.png)
