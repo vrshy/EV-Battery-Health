@@ -171,4 +171,4 @@ B. Saha and K. Goebel (2007). "Battery Data Set", NASA Prognostics Data Reposito
 ## Author
 
 **Vrshy**, B.E. Electrical and Electronics Engineering. Moving into data science and analytics.
-[GitHub](https://github.com/vrshy) · [LinkedIn](https://www.linkedin.com/in/varshiganesan03)
+[GitHub](https://github.com/vrshy) · [LinkedIn](https://www.linkedin.com/in/varshiganesan)
