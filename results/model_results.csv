@@ -1,0 +1,4 @@
+Model,MAE (SOH %),RMSE (SOH %),R2
+Linear Regression,5.315,5.362,0.584
+Random Forest,2.133,2.804,0.886
+XGBoost,1.882,2.319,0.922
