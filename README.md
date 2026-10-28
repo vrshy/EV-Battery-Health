@@ -5,7 +5,7 @@ Predicts a lithium-ion battery's **capacity**, **State of Health (SOH)** and **R
 🔗 **Live app:** [BatteryHealth](https://ev-battery-health-rxtyr4kezt79ceafe8jdw6.streamlit.app/)
 
 ![App screenshot](images/singlecycle.png)
-![App screenshot](images/multiplecycles.png)
+![App screenshot](images/mutliplecycles.png)
 
 ## Why this project
 
