@@ -138,8 +138,8 @@ The app's final models are trained on **all four batteries**, so their own accur
 ## Run it yourself
 
 ```bash
-git clone https://github.com/vrshy/<your-repo-name>.git
-cd <your-repo-name>
+git clone https://github.com/vrshy/<EV-Battery-Health>.git
+cd <EV-Battery-Health>
 python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
