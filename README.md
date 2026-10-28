@@ -36,7 +36,7 @@ For every discharge cycle I summarised the raw voltage, current and temperature 
 |---|---|---|
 | 1 | `step1_load_data.ipynb` | Read the NASA `.mat` files, kept discharge cycles, calculated SOH, plotted capacity fade |
 | 2 | `step2_eda.ipynb` | Combined four batteries, checked data quality, explored features and correlations |
-| 3 | `step3_train_model.ipynb` | Trained Linear Regression, Random Forest and XGBoost to predict SOH |
+| 3a | `step3a_train_model.ipynb` | Trained Linear Regression, Random Forest and XGBoost to predict SOH |
 | 3b | `step3b_target_comparison.ipynb` | Tested whether predicting capacity first works better than predicting SOH directly |
 | 4 | `step4_shap_explain.ipynb` | Explained the model with SHAP |
 | 5 | `step5_rul_prediction.ipynb` | Predicted Remaining Useful Life |
