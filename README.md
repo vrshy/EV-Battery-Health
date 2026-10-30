@@ -41,6 +41,7 @@ For every discharge cycle I summarised the raw voltage, current and temperature 
 | 4 | `step4_shap_explain.ipynb` | Explained the model with SHAP |
 | 5 | `step5_rul_prediction.ipynb` | Predicted Remaining Useful Life |
 | 6 | `step6_streamlit_app.ipynb` | Saved the final models and built the app |
+| 7 | `step7_extended_analysis.ipynb` | Time series forecasting, healthy/degraded classification, clustering and a hypothesis test |
 
 **Honest evaluation.** I split by **battery**, not by random rows. Consecutive cycles of one battery are almost identical, so a random split would leak the answers. Models train on B0005, B0006 and B0007 and are tested on **B0018, which they never saw**. I also repeated the SOH comparison with every battery held out in turn.
 
@@ -115,6 +116,46 @@ Average voltage dominates, followed by current and discharge time. Removing `min
 
 ![SHAP beeswarm](images/shap_beeswarm.png)
 
+### 5. Beyond SOH: forecasting, classification, clustering and a hypothesis test (Step 7)
+
+Four more questions on the same data, with the same honest rules: classifiers are tested on a battery they have not seen, and forecasts are only scored on cycles that come after the data used to fit them.
+
+**Time series forecasting.** A rolling-origin backtest: 41 forecasts of the next 20 cycles across the four batteries, scored in SOH points.
+
+| Model | MAE (SOH points) | Better than naive by |
+|---|---|---|
+| Naive ("nothing changes") | 2.72 | n/a |
+| Linear trend (last 30 cycles) | 1.70 | 38% |
+| Holt (damped) | 1.71 | 37% |
+| ARIMA(1,1,0) with drift | 1.66 | 39% |
+
+The three real models are too close to call. Forecasting the **end of life** from cycle 50 is much weaker: every forecast that reaches 80% is too optimistic (the linear trend is off by about 22 cycles on average, ARIMA by about 58) and damped Holt never reaches it, because capacity fade speeds up later in life.
+
+![Forecasts from cycle 80](images/ts_forecast.png)
+
+**Classification: healthy (SOH >= 80%) vs degraded.** Leave-one-battery-out, averaged over the four folds:
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|---|---|---|---|---|
+| Majority baseline | 0.564 | 0.00 | 0.00 | 0.00 | 0.500 |
+| Logistic Regression | 0.914 | 0.82 | 0.99 | 0.89 | 0.997 |
+| Random Forest | 0.900 | 0.92 | 0.86 | 0.88 | 0.997 |
+| XGBoost | 0.887 | 0.97 | 0.80 | 0.87 | 0.996 |
+| Logistic Regression, no `discharge_time_s` | 0.957 | 0.98 | 0.90 | 0.93 | 0.998 |
+| XGBoost, no `discharge_time_s` | 0.875 | 0.74 | 0.63 | 0.67 | 0.996 |
+
+The models rank cycles almost perfectly (ROC-AUC about 0.997), but a fixed cut-off transfers unevenly to a new battery: XGBoost misses about a quarter of degraded cycles, and XGBoost without `discharge_time_s` fails completely on B0007 (F1 0.00). With only four folds, the model ranking is indicative, not final.
+
+![Confusion matrices](images/classification_confusion.png)
+
+**Clustering.** K-Means finds no clear natural number of clusters (silhouette only creeps from 0.37 to 0.42 as k grows), so I used k = 3 as a description. The raw clusters mix battery identity (agreement 0.36) with ageing (0.29 against healthy/degraded). Scaling the features **within each battery** removes the battery effect (agreement about 0) and recovers healthy/degraded better (agreement 0.52, silhouette 0.49). That suggests comparing a pack against its own early-life baseline.
+
+![Clusters in PCA space](images/clustering_pca.png)
+
+**Hypothesis test.** H0: peak temperature is the same in healthy and degraded cycles. Degraded cycles ran about **1.3 °C hotter** (39.0 vs 40.3 °C, Cohen's d about 1.0; Welch t-test and Mann-Whitney both p < 0.001, also after a Bonferroni correction for the six features tested). But cycles from one battery are not independent, so those p-values are too small. The stricter battery-level paired test (n = 4) gives p = 0.042 for peak temperature, which does not survive the correction, although degraded cycles were hotter in **all four** batteries. So I claim that degraded cycles *tend* to run hotter, not that it is proven. At battery level only discharge time stays significant.
+
+![Peak temperature](images/hypothesis_max_temp.png)
+
 ## The app
 
 Built with Streamlit. It has three tabs:
@@ -131,7 +172,8 @@ The app's final models are trained on **all four batteries**, so their own accur
 - **One test battery for most results.** The leave-one-battery-out check helps, but four batteries is still very little.
 - **SOH depends on the starting capacity.** If the rated capacity (2.0 Ah) is used instead of the battery's real first-cycle capacity, every SOH value shifts. For B0018 that is about 7 points.
 - **Discharge time is nearly the same information as capacity.** Inside each battery their correlation is about 0.98 to 0.99. A real vehicle rarely completes a full discharge, so the model is less practical than the lab numbers suggest.
-- **RUL is weak,** especially early in a battery's life.
+- **RUL is weak,** especially early in a battery's life. The Step 7 forecasts from early life are also too optimistic about end of life.
+- **Step 7 conclusions rest on four batteries,** so the clustering, classification and hypothesis-test results are indicative only.
 - **Lab conditions, not real driving.**
 - The 80% end-of-life line is a convention.
 
@@ -144,25 +186,26 @@ python -m pip install -r requirements.txt
 python -m streamlit run app.py
 ```
 
-To re-run the notebooks from the start, download the NASA battery data ([direct download](https://phm-datasets.s3.amazonaws.com/NASA/5.+Battery+Data+Set.zip)), unzip it, extract the first inner zip (`BatteryAgingARC-FY08Q4`), and copy `B0005.mat`, `B0006.mat`, `B0007.mat` and `B0018.mat` into the `data/` folder. Then run the notebooks in order. The processed table `all_batteries.csv` is already included, so notebooks 3 onwards work without the raw files.
+To re-run the notebooks from the start, download the NASA battery data ([direct download](https://phm-datasets.s3.amazonaws.com/NASA/5.+Battery+Data+Set.zip)), unzip it, extract the first inner zip (`BatteryAgingARC-FY08Q4`), and copy `B0005.mat`, `B0006.mat`, `B0007.mat` and `B0018.mat` into the `data/` folder. Then run the notebooks in order. The processed table `all_batteries.csv` is already included, so notebooks 3 onwards work without the raw files. Step 7 needs a few more packages: `python -m pip install -r requirements-notebooks.txt`.
 
 ## Project structure
 
 ```
 ├── app.py                  Streamlit app
 ├── requirements.txt
+├── requirements-notebooks.txt  Extra packages for the notebooks (statsmodels, SciPy, ...)
 ├── all_batteries.csv       Per-cycle features for the four batteries
 ├── sample_input.csv        Example input for the upload tab
 ├── models/                 Saved XGBoost models and app metadata
 ├── data/                   Place the NASA .mat files here (not included)
 ├── images/                 Plots used in this README
 ├── results/                Result tables (CSV)
-└── step1 ... step6         Notebooks, in order
+└── step1 ... step7         Notebooks, in order
 ```
 
 ## Tech stack
 
-Python, pandas, NumPy, scikit-learn, XGBoost, SHAP, Matplotlib, Streamlit.
+Python, pandas, NumPy, scikit-learn, XGBoost, SHAP, statsmodels, SciPy, Matplotlib, Streamlit.
 
 ## Data citation
 
