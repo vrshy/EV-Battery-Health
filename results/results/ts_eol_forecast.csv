@@ -1,0 +1,5 @@
+battery,actual EOL cycle,Linear trend (last 30),Holt (damped),"ARIMA(1,1,0) + drift"
+B0005,101,140,,209
+B0006,61,64,,79
+B0007,124,137,,208
+B0018,75,110,,96
