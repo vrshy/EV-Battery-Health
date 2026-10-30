@@ -1,3 +1,0 @@
-Approach,MAE (SOH pts),RMSE (SOH pts),R2,MAE (Ah),"Early-life bias (first 20 cycles, SOH pts)"
-A: predict SOH directly,1.882,2.319,0.922,0.035,-3.534
-"B: predict capacity, then SOH",0.873,1.123,0.982,0.016,0.393

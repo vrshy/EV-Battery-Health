@@ -1,4 +1,0 @@
-cluster,cycles,mean_cycle_number,mean_SOH,share_degraded
-1,284,48.47,89.22,0.19
-2,154,89.14,86.0,0.29
-3,198,120.57,71.26,0.9

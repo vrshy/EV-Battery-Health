@@ -1,7 +1,0 @@
-feature,mean_abs_shap
-avg_voltage,5.725
-avg_current,1.397
-discharge_time_s,1.338
-avg_temp,0.358
-max_temp,0.287
-min_voltage,0.132

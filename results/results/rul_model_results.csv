@@ -1,7 +1,0 @@
-Features,Model,MAE (cycles),RMSE (cycles),R2
-Raw,Linear Regression,10.95,15.227,0.505
-Raw,Random Forest,13.322,17.21,0.368
-Raw,XGBoost,12.843,15.92,0.459
-Smoothed,Linear Regression,15.79,19.833,0.161
-Smoothed,Random Forest,16.1,20.575,0.097
-Smoothed,XGBoost,16.386,18.844,0.242

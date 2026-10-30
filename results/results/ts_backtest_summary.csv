@@ -1,5 +1,0 @@
-model,MAE (SOH pts),bias (SOH pts),MAE vs naive
-Naive,2.72,2.52,0%
-Linear trend (last 30),1.7,-0.13,38%
-Holt (damped),1.71,0.91,37%
-"ARIMA(1,1,0) + drift",1.66,0.23,39%
